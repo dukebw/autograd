@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from builtins import range
+# NOTE(brendan): Calls wrap_namespace(_np.__dict__, globals()) on import
 import autograd.numpy as np
 from autograd import grad
 from autograd.test_util import check_grads

@@ -32,6 +32,19 @@ def primitive(f_raw):
     """
     Wraps a function so that its gradient can be specified and its invocation
     can be recorded. For examples, see the docs."""
+    # NOTE(brendan): Decorators take a function as argument, and return another
+    # function, i.e.,
+    # @bar
+    # def foo(x):
+    # ...
+    # is equivalent to:
+    # def foo(x):
+    # ...
+    # foo = bar(foo)
+    #
+    # wraps is a function that returns a decorator, which replaces __name__ and
+    # __doc__ of the function (f_wrapped) returned by primitive with those of
+    # f_raw.
     @wraps(f_raw)
     def f_wrapped(*args, **kwargs):
         boxed_args, trace, node_constructor = find_top_boxed_args(args)

@@ -21,6 +21,8 @@ def wrap_namespace(old, new):
     function_types = {_np.ufunc, types.FunctionType, types.BuiltinFunctionType}
     for name, obj in old.items():
         if obj in notrace_functions:
+            # NOTE(brendan): notrace_primitive has to marshal out all of the
+            # values from potentially boxed obj's.
             new[name] = notrace_primitive(obj)
         elif type(obj) in function_types:
             new[name] = primitive(obj)

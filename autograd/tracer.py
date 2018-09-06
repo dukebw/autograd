@@ -47,6 +47,7 @@ def primitive(f_raw):
     # f_raw.
     @wraps(f_raw)
     def f_wrapped(*args, **kwargs):
+        # NOTE(brendan): Finds the boxed args topmost on the stack.
         boxed_args, trace, node_constructor = find_top_boxed_args(args)
         if boxed_args:
             argvals = subvals(args, [(argnum, box._value) for argnum, box in boxed_args])
@@ -55,6 +56,7 @@ def primitive(f_raw):
             parents = tuple(box._node for _     , box in boxed_args)
             argnums = tuple(argnum    for argnum, _   in boxed_args)
             ans = f_wrapped(*argvals, **kwargs)
+            # TODO(brendan): What is node_contructor here?
             node = node_constructor(ans, f_wrapped, argvals, kwargs, argnums, parents)
             return new_box(ans, trace, node)
         else:

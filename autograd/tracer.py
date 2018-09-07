@@ -56,7 +56,11 @@ def primitive(f_raw):
             parents = tuple(box._node for _     , box in boxed_args)
             argnums = tuple(argnum    for argnum, _   in boxed_args)
             ans = f_wrapped(*argvals, **kwargs)
-            # TODO(brendan): What is node_contructor here?
+            # NOTE(brendan): This seems to be creating the node, which houses a
+            # function (node.vjp) that calls a bunch of corresponding VJPs for
+            # all the arguments to this Node.
+            #
+            # See defvjp in autograd/core.py.
             node = node_constructor(ans, f_wrapped, argvals, kwargs, argnums, parents)
             return new_box(ans, trace, node)
         else:

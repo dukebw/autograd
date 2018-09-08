@@ -50,6 +50,8 @@ def primitive(f_raw):
         # NOTE(brendan): Finds the boxed args topmost on the stack.
         boxed_args, trace, node_constructor = find_top_boxed_args(args)
         if boxed_args:
+            # NOTE(brendan): Extract out the values from the boxes, and call
+            # the wrapped function.
             argvals = subvals(args, [(argnum, box._value) for argnum, box in boxed_args])
             if f_wrapped in notrace_primitives[node_constructor]:
                 return f_wrapped(*argvals, **kwargs)

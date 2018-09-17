@@ -1,3 +1,10 @@
+"""This file seems to be providing an abstraction over real and complex vector
+spaces. Perhaps because gradients need to be handled specially for real and
+complex values, but there is enough redundancy within real/complex (e.g.,
+between np.float64 and np.int64) that these implementations can be compressed.
+
+For whatever reason, the parent class VSpace isn't in this file.
+"""
 import numpy as np
 from autograd.extend import VSpace
 

@@ -64,6 +64,8 @@ def primitive(f_raw):
             #
             # See defvjp in autograd/core.py.
             node = node_constructor(ans, f_wrapped, argvals, kwargs, argnums, parents)
+            # NOTE(brendan): Different Box type mappings are registered by
+            # Box.register.
             return new_box(ans, trace, node)
         else:
             return f_raw(*args, **kwargs)
@@ -109,6 +111,8 @@ class TraceStack(object):
 trace_stack = TraceStack()
 
 class Box(object):
+    # NOTE(brendan): type_mappings maps between Boxs and numpy classes, e.g.,
+    # ArrayBox and np.ndarray, np.float64, etc.
     type_mappings = {}
     types = set()
 

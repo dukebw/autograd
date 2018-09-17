@@ -60,7 +60,11 @@ def primitive(f_raw):
             ans = f_wrapped(*argvals, **kwargs)
             # NOTE(brendan): This seems to be creating the node, which houses a
             # function (node.vjp) that calls a bunch of corresponding VJPs for
-            # all the arguments to this Node.
+            # all the arguments to this Node that are on top of the trace
+            # stack (i.e., all have arg._trace the highest of any boxed arg).
+            #
+            # Why might this be done? Possibly because those top boxed args are
+            # what needs to be evaluated next.
             #
             # See defvjp in autograd/core.py.
             node = node_constructor(ans, f_wrapped, argvals, kwargs, argnums, parents)
